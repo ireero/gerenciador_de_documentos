@@ -1,6 +1,6 @@
 import tkinter as tk
 
-class Base:
+class Tela:
 
     def __init__(self) -> None:
         # Cria a janela
@@ -22,4 +22,4 @@ class Base:
         self.text_label.config(text="Botão clicado!")
     
 
-b = Base()
+b = Tela()
