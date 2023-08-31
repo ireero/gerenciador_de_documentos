@@ -1,8 +1,14 @@
 import tkinter as tk
+import leitor_de_pastas as l
 
 class Tela:
 
     def __init__(self) -> None:
+        self.trocado = False
+        self.leitor_pastas = l.LeitosDePastas()
+
+        print(self.leitor_pastas.pastas)
+
         # Cria a janela
         window = tk.Tk()
         window.title("Tela com Tkinter")
@@ -19,7 +25,11 @@ class Tela:
         window.mainloop()
 
     def button_click(self):
-        self.text_label.config(text="Botão clicado!")
-    
+        if self.trocado:
+            self.trocado = False
+            self.text_label.config(text=f"Texto Centralizado")
+        else:
+            self.trocado = True
+            self.text_label.config(text=f"{self.leitor_pastas.pastas}")
 
 b = Tela()
