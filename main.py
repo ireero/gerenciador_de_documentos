@@ -1,29 +1,25 @@
 import tkinter as tk
 
-class App(tk.Frame):
-    def __init__(self, master):
-        super().__init__(master)
-        self.pack()
+class Base:
 
-        self.entrythingy = tk.Entry()
-        self.entrythingy.pack()
+    def __init__(self) -> None:
+        # Cria a janela
+        window = tk.Tk()
+        window.title("Tela com Tkinter")
+        # Cria label centralizada
+        self.text_label = tk.Label(window, text="Texto Centralizado", font=("Helvetica", 16))
+        self.text_label.pack(pady=50)
+        # Cria janela
+        window.geometry("400x300")
+        # Cria botão
+        self.button = tk.Button(window, text="Clique Aqui", command=self.button_click)
+        self.button.pack()
 
-        # Create the application variable.
-        self.contents = tk.StringVar()
-        # Set it to some value.
-        self.contents.set("this is a variable")
-        # Tell the entry widget to watch this variable.
-        self.entrythingy["textvariable"] = self.contents
+        # Iniciar o loop de eventos
+        window.mainloop()
 
-        # Define a callback for when the user hits return.
-        # It prints the current value of the variable.
-        self.entrythingy.bind('<Key-Return>',
-                             self.print_contents)
+    def button_click(self):
+        self.text_label.config(text="Botão clicado!")
+    
 
-    def print_contents(self, event):
-        print("Hi. The current entry content is:",
-              self.contents.get())
-
-root = tk.Tk()
-myapp = App(root)
-myapp.mainloop()
+b = Base()
