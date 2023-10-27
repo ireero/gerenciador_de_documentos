@@ -2,7 +2,7 @@ import os
 from tratativa_pdf import TratativaPDF
 from tratativa_xlsx import TratativaXLSX
 
-class LeitosDePastas:
+class LeitorDePastas:
 
     def __init__(self) -> None:
         self.pasta = '.'
