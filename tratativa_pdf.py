@@ -1,16 +1,13 @@
-import pdfreader
-from pdfreader import PDFDocument, SimplePDFViewer
-
-import pdfreader
-from pdfreader import PDFDocument, SimplePDFViewer
+from PyPDF2 import PdfReader
 
 
 class TratativaPDF:
 
     def __init__(self, nome_pdf) -> None:
-        print(f'Nome do pdf -> {nome_pdf}')
-        self.fd = open(nome_pdf, "rb")
-        self.doc = PDFDocument(self.fd)
-        self.all_pages = [p for p in self.doc.pages()]
-        print(self.all_pages)
-        print(len(self.all_pages))
+        self.reader = PdfReader(nome_pdf)
+        print(len(self.reader.pages))
+        self.page = self.reader.pages[0]
+        for i,page in enumerate(self.reader.pages):
+            print(f'Início da página {i}')
+            print(page.extract_text())
+            print(f'Fim da página {i}')

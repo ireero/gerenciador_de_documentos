@@ -1,2 +1,1 @@
 pdfreader==0.1.12
-tika==2.6.0

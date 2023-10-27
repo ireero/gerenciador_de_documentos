@@ -1,5 +1,6 @@
 import os
 from tratativa_pdf import TratativaPDF
+from tratativa_xlsx import TratativaXLSX
 
 class LeitosDePastas:
 
@@ -27,6 +28,8 @@ class LeitosDePastas:
             self.ler_todos_os_arquivos()
         elif '.pdf' in self.pastas[index_escolhido - 1]:
             pdf = TratativaPDF(nome_pdf=self.pastas[index_escolhido - 1])
+        elif '.xlsx' in self.pastas[index_escolhido - 1]:
+            xlsx = TratativaXLSX(nome_arquivo=self.pastas[index_escolhido - 1])
         else:
 
             opcao_escolhida = self.pastas[index_escolhido - 1]
@@ -40,9 +43,14 @@ class LeitosDePastas:
             print('\n#### Fim do arquivo ####')
     
     def ler_todos_os_arquivos(self):
-        for p in self.pastas:
-            ar = open(p)
-            print(f'NOVO ARQUIVO: {p}\n')
-            for index,l in enumerate(ar.readlines()):
-                print(index+1,' - ',l)
-            print(f'\nFIM ARQUIVO: {p}\n')
+        for arquivo in self.pastas:
+            print(f'NOVO ARQUIVO: {arquivo}\n')
+            if '.pdf' in arquivo:
+                pdf = TratativaPDF(nome_pdf=arquivo)
+            elif '.xlsx' in arquivo:
+                xlsx = TratativaXLSX(nome_arquivo=arquivo)
+            else:
+                ar = open(arquivo)
+                for index,l in enumerate(ar.readlines()):
+                    print(index+1,' - ',l)
+            print(f'\nFIM ARQUIVO: {arquivo}\n')
