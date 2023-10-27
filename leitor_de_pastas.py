@@ -26,7 +26,7 @@ class LeitosDePastas:
         if index_escolhido == len(self.pastas) + 1:
             self.ler_todos_os_arquivos()
         elif '.pdf' in self.pastas[index_escolhido - 1]:
-            t = TratativaPDF(nome_pdf=self.pastas[index_escolhido - 1])
+            pdf = TratativaPDF(nome_pdf=self.pastas[index_escolhido - 1])
         else:
 
             opcao_escolhida = self.pastas[index_escolhido - 1]
