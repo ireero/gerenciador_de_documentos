@@ -9,20 +9,18 @@ class TratativaDeZipagem:
         escolha = input('Escolha a ação que você deseja efetuar: ')
         if escolha == '1':
             l = LeitorDePastas()
-            l.ler_pastas()
-            for index,arquivo in enumerate(l.pastas):
-                print(index+1,' - ',arquivo)
-            index_escolhido = int(input("Arquivo que deseja zipar: "))
+            for index,arquivo in enumerate(l.pastas, start=1):
+                print(index,' - ',arquivo)
+            index_escolhido = int(input("Arquivo que deseja zipar: ")) - 1
             nome_zipagem = str(input('Escolha um nome para o arquivo zipado: '))
-            self.zipando_arquivo(nome_da_zipagem=nome_zipagem, arquivo_para_zipar=l.pastas[index_escolhido - 1])
+            self.zipando_arquivo(nome_da_zipagem=nome_zipagem, arquivo_para_zipar=l.pastas[index_escolhido])
         elif escolha == '2':
             l = LeitorDePastas()
-            l.ler_pastas()
-            for index,arquivo in enumerate(l.pastas):
-                print(index+1,' - ',arquivo)
-            index_escolhido = int(input("Arquivo que deseja zipar: "))
-            if '.zip' in l.pastas[index_escolhido - 1]:
-                self.extraindo_arquivo_zipado(nome_do_arquivo=l.pastas[index_escolhido - 1])
+            for index,arquivo in enumerate(l.pastas, start=1):
+                print(index,' - ',arquivo)
+            index_escolhido = int(input("Arquivo que deseja zipar: ")) - 1
+            if '.zip' in l.pastas[index_escolhido]:
+                self.extraindo_arquivo_zipado(nome_do_arquivo=l.pastas[index_escolhido])
             else:
                 print('Este arquivo não é um arquivo zipado')
 

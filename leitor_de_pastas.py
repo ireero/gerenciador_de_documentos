@@ -18,21 +18,21 @@ class LeitorDePastas:
 
     def escolha_de_arquivo_para_leitura(self):
         print('Escolha o arquivo que deseja ler: ')
-        for index,p in enumerate(self.pastas):
-            print(index+1,' - ',p)
-        print(len(self.pastas) + 1,' - ','Ler tudo')
+        for index,p in enumerate(self.pastas, start=1):
+            print(index,' - ',p)
+        print(len(self.pastas),' - ','Ler tudo')
 
-        index_escolhido = int(input("Arquivo que deseja ler: "))
+        index_escolhido = int(input("Arquivo que deseja ler: ")) - 1
 
-        if index_escolhido == len(self.pastas) + 1:
+        if index_escolhido == len(self.pastas):
             self.ler_todos_os_arquivos()
-        elif '.pdf' in self.pastas[index_escolhido - 1]:
-            pdf = TratativaPDF(nome_pdf=self.pastas[index_escolhido - 1])
-        elif '.xlsx' in self.pastas[index_escolhido - 1]:
-            xlsx = TratativaXLSX(nome_arquivo=self.pastas[index_escolhido - 1])
+        elif '.pdf' in self.pastas[index_escolhido]:
+            pdf = TratativaPDF(nome_pdf=self.pastas[index_escolhido])
+        elif '.xlsx' in self.pastas[index_escolhido]:
+            xlsx = TratativaXLSX(nome_arquivo=self.pastas[index_escolhido])
         else:
 
-            opcao_escolhida = self.pastas[index_escolhido - 1]
+            opcao_escolhida = self.pastas[index_escolhido]
 
             arq = open(opcao_escolhida)
 
@@ -51,6 +51,6 @@ class LeitorDePastas:
                 xlsx = TratativaXLSX(nome_arquivo=arquivo)
             else:
                 ar = open(arquivo)
-                for index,l in enumerate(ar.readlines()):
-                    print(index+1,' - ',l)
+                for index,l in enumerate(ar.readlines(), start=1):
+                    print(index,' - ',l)
             print(f'\nFIM ARQUIVO: {arquivo}\n')
