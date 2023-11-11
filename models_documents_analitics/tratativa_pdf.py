@@ -4,10 +4,18 @@ from PyPDF2 import PdfReader
 class TratativaPDF:
 
     def __init__(self, nome_pdf) -> None:
-        self.reader = PdfReader(nome_pdf)
-        print(len(self.reader.pages))
+        self.reader = PdfReader(f'./data_temp/{nome_pdf}.pdf')
+        self.number_of_pages = len(self.reader.pages)
         self.page = self.reader.pages[0]
+    
+    def read_pdf(self):
+        text = ''
         for i,page in enumerate(self.reader.pages):
-            print(f'Início da página {i}')
-            print(page.extract_text())
-            print(f'Fim da página {i}')
+            text += f'Início da página {i}\n'
+            text += page.extract_text()
+            text += f'Fim da página {i}'
+        
+        return {
+            'number_of_pages': self.number_of_pages,
+            'content_pages': text
+        }
