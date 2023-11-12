@@ -12,10 +12,10 @@ class TratativaPDF:
         text = ''
         for i,page in enumerate(self.reader.pages, start=1):
             text += f'Início da página {i}\n'
-            text += page.extract_text()
+            text += page.extract_text().encode('utf-8')
             text += f'Fim da página {i}'
         
         return {
             'number_of_pages': self.number_of_pages,
-            'content_pages': text.replace('\n', '\n')
+            'content_pages': text
         }

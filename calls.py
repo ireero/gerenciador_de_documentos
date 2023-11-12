@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, send_file, jsonify
+from flask import Blueprint, render_template, request, send_file, jsonify, send_from_directory, Response
 import uuid
 from models_documents_analitics.tratativa_pdf import TratativaPDF
 from models_documents_analitics.tratativa_de_imagens import TratativaDeImagens
+from models_documents_analitics.tratativa_de_zipagem import TratativaDeZipagem
 import os
 
 calls = Blueprint('calls',__name__)
@@ -29,7 +30,7 @@ def image_read_text():
         file.save(f'./data_temp/{process_code}.png')
         type = 'png'
     elif 'jpg' in file.content_type or 'jpeg' in file.content_type:
-        file.save(f'./data_temp/{process_code}.jpeg')
+        file.save(f'./data_temp/{process_code}.jpg')
         type = 'jpg'
     else:
         return 'Erro, tipo de arquivo inválido para este processo'
@@ -40,3 +41,24 @@ def image_read_text():
     return {
         'texto_da_imagem': text
     }
+
+@calls.route('/zip/zipar_arquivo')
+def zip_file():
+    file = request.files['file']
+    process_code = str(uuid.uuid4())
+    archive_type = file.content_type.replace('application/', '').replace('image/', '')
+    file.save(f'./data_temp/{process_code}.{archive_type}')
+    zip = TratativaDeZipagem(file_name=process_code, file_type=archive_type)
+    zip.zipando_arquivo()
+    # os.remove(f'./data_temp/{process_code}.{archive_type}')
+    return send_file(f'./data_temp/ziped_archive.zip', mimetype='application/zip', as_attachment=True)
+
+@calls.route('/zip/extranindo_arquivos_zipados')
+def extracting_ziped_files():
+    file = request.files['file']
+    process_code = str(uuid.uuid4())
+    file.save(f'./data_temp/{process_code}.zip')
+    zip = TratativaDeZipagem(file_name=process_code, file_type='zip')
+    data = zip.extraindo_arquivo_zipado()
+    os.remove(f'./data_temp/{process_code}.zip')
+    return data
