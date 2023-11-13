@@ -3,6 +3,7 @@ import uuid
 from models_documents_analitics.tratativa_pdf import TratativaPDF
 from models_documents_analitics.tratativa_de_imagens import TratativaDeImagens
 from models_documents_analitics.tratativa_de_zipagem import TratativaDeZipagem
+from models_documents_analitics.tratativa_xlsx import TratativaXLSX
 import os
 
 calls = Blueprint('calls',__name__)
@@ -62,3 +63,13 @@ def extracting_ziped_files():
     data = zip.extraindo_arquivo_zipado()
     os.remove(f'./data_temp/{process_code}.zip')
     return data
+
+@calls.route('/excel/ler_arquivo')
+def read_excel_file():
+    file = request.files['file']
+    process_code = str(uuid.uuid4())
+    file.save(f'./data_temp/{process_code}.xlsx')
+    excel = TratativaXLSX(archive_name=process_code)
+    text_data = excel.returning_data_xlsx()
+    os.remove(f'./data_temp/{process_code}.xlsx')
+    return str(text_data)
