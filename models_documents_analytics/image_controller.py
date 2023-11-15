@@ -4,7 +4,7 @@ import cv2
 from PIL import Image
 
 
-class TratativaDeImagens:
+class ImageController:
 
     def __init__(self, image_name, type) -> None:
         self.image = cv2.imread(f'./data_temp/{image_name}.{type}')

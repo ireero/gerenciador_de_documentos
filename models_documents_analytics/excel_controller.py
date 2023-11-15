@@ -1,6 +1,6 @@
 import pandas as pd 
 
-class TratativaXLSX:
+class ExcelController:
 
     def __init__(self, archive_name) -> None:
         self.archive_name = archive_name

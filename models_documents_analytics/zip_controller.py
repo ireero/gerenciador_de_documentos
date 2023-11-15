@@ -1,7 +1,7 @@
 from zipfile import ZipFile
 import os
 
-class TratativaDeZipagem:
+class ZipController:
 
     def __init__(self, file_name, file_type) -> None:
         self.file_name = file_name

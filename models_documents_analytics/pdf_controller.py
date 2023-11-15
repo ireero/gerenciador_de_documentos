@@ -1,7 +1,7 @@
 from PyPDF2 import PdfReader
 
 
-class TratativaPDF:
+class PDFController:
 
     def __init__(self, nome_pdf) -> None:
         self.reader = PdfReader(f'./data_temp/{nome_pdf}.pdf')

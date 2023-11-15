@@ -8,6 +8,10 @@ from calls import calls as calls_blueprint
 
 app.register_blueprint(calls_blueprint)
 
+from navigation import navigation as navigation_blueprint
+
+app.register_blueprint(navigation_blueprint)
+
 app.config['SECRET-KEY'] = 'secret-key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///searchs.sqlite'
 
