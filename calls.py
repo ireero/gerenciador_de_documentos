@@ -16,7 +16,6 @@ def pdf_reader():
     reader = PDFController(nome_pdf=process_code)
     content = reader.read_pdf()
     os.remove(f'./data_temp/{process_code}.pdf')
-    print(content['content_pages'])
     return render_template('pdf/pdf_read_page.html', text_pdf=content['content_pages'])
 
 @calls.route('/imagens/retirar_texto')
