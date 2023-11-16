@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de documentos</title>
+</head>
+<body>
+    <h1>Leitura de PDF</h1>
+    <form action="{{ url_for('calls.pdf_reader') }}" id="arquivo" method="POST" enctype="multipart/form-data">
+        <input type="file" accept=".pdf" id="leitura_pdf" name="leitura_pdf" required> 
+        <button type="submit" style="background-color: red; color: white;" class="btn">Ler PDF</button>
+    </form>
+    {% if text_pdf != None %}
+    <pre>{{text_pdf}}</pre>
+    {% endif %}
+</body>
+</html>

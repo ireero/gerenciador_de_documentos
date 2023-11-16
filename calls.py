@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, send_file, jsonify, send_from_directory, Response
+from flask import Blueprint, render_template, request, send_file, jsonify, send_from_directory, Response, redirect
 import uuid
 from models_documents_analytics.pdf_controller import PDFController
 from models_documents_analytics.image_controller import ImageController
@@ -8,15 +8,16 @@ import os
 
 calls = Blueprint('calls',__name__)
 
-@calls.route('/pdf/leitura')
+@calls.route('/pdf/leitura', methods=['POST'])
 def pdf_reader():
-    file = request.files['file']
+    file = request.files['leitura_pdf']
     process_code = str(uuid.uuid4())
     file.save(f'./data_temp/{process_code}.pdf')
     reader = PDFController(nome_pdf=process_code)
     content = reader.read_pdf()
     os.remove(f'./data_temp/{process_code}.pdf')
-    return jsonify(content)
+    print(content['content_pages'])
+    return render_template('pdf/pdf_read_page.html', text_pdf=content['content_pages'])
 
 @calls.route('/imagens/retirar_texto')
 def image_read_text():

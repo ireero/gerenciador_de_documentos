@@ -8,4 +8,8 @@ def index():
 
 @navigation.route('/pdf_escolha')
 def index_pdf():
-    return render_template('pdf_page.html')
+    return render_template('pdf/pdf_page.html')
+
+@navigation.route('/pdf_escolha/leitura')
+def read_pdf_page():
+    return render_template('pdf/pdf_read_page.html')
