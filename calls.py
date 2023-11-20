@@ -30,7 +30,7 @@ def image_read_text():
         file.save(f'./data_temp/{process_code}.jpg')
         type = 'jpg'
     else:
-        return 'Erro, tipo de arquivo inválido para este processo'
+        return render_template('image/image_read_page.html', text_image='Erro, tipo de arquivo inválido para este processo')
     
     image = ImageController(image_name=process_code, type=type)
     text = image.read_text()
