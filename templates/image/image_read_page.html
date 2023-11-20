@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de documentos</title>
+</head>
+<body>
+    <h1>Leitura de Imagem</h1>
+    <form action="{{ url_for('calls.image_read_text') }}" id="arquivo" method="POST" enctype="multipart/form-data">
+        <input type="file" id="leitura_image" name="leitura_image" required> 
+        <button type="submit" style="background-color: red; color: white;" class="btn">Ler Imagem</button>
+    </form>
+    {% if text_image != None %}
+    <pre>{{text_image}}</pre>
+    {% endif %}
+</body>
+</html>

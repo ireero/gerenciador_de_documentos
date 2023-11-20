@@ -11,9 +11,9 @@ class PDFController:
     def read_pdf(self):
         text = ''
         for i,page in enumerate(self.reader.pages, start=1):
-            text += f'Início da página {i}\n'
+            text += f'\n ----------------------------------------------------------- Início da página {i} ----------------------------------------------------------- \n'
             text += page.extract_text()
-            text += f'Fim da página {i}'
+            text += f'\n\n ----------------------------------------------------------- Fim da página {i} -----------------------------------------------------------\n'
         
         return {
             'number_of_pages': self.number_of_pages,

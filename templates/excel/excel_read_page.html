@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de documentos</title>
+</head>
+<body>
+    <h1>Leitura de Excel</h1>
+    <form action="{{ url_for('calls.read_excel_file') }}" id="arquivo" method="POST" enctype="multipart/form-data">
+        <input type="file" accept=".xlsx" id="leitura_excel" name="leitura_excel" required> 
+        <button type="submit" style="background-color: red; color: white;" class="btn">Ler Excel</button>
+    </form>
+    {% if text_excel != None %}
+    <pre>{{text_excel}}</pre>
+    {% endif %}
+</body>
+</html>

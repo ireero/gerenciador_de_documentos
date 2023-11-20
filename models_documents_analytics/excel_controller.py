@@ -8,4 +8,4 @@ class ExcelController:
     def returning_data_xlsx(self):
         df = pd.read_excel(f'./data_temp/{self.archive_name}.xlsx')
         df.head() 
-        return df.values
+        return str(df.values)

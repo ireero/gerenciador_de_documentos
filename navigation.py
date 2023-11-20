@@ -20,6 +20,10 @@ def read_pdf_page():
 def index_excel():
     return render_template('excel/excel_page.html')
 
+@navigation.route('/excel_escolha/leitura')
+def read_excel_page():
+    return render_template('excel/excel_read_page.html')
+
 # Zip
 @navigation.route('/zip_escolha')
 def index_zip():
@@ -29,3 +33,7 @@ def index_zip():
 @navigation.route('/imagem_escolha')
 def index_image():
     return render_template('image/image_page.html')
+
+@navigation.route('/imagem_escolha/leitura')
+def read_image_page():
+    return render_template('image/image_read_page.html')
