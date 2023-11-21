@@ -48,15 +48,20 @@ def zip_file():
     # os.remove(f'./data_temp/{process_code}.{archive_type}')
     return send_file(f'./data_temp/ziped_archive.zip', mimetype='application/zip', as_attachment=True)
 
-@calls.route('/zip/extranindo_arquivos_zipados')
+@calls.route('/zip/extranindo_arquivos_zipados', methods=['POST'])
 def extracting_ziped_files():
-    file = request.files['file']
+    file = request.files['extraindo_arquivo_zipado']
     process_code = str(uuid.uuid4())
     file.save(f'./data_temp/{process_code}.zip')
     zip = ZipController(file_name=process_code, file_type='zip')
+    data = []
     data = zip.extraindo_arquivo_zipado()
     os.remove(f'./data_temp/{process_code}.zip')
-    return data
+    return render_template('zip/zip_extract_page.html', files_folders=data)
+
+@calls.route('/zip/extraindo_arquivos_zipados')
+def donwload_extracted_zip():
+    return send_file()
 
 @calls.route('/excel/ler_arquivo', methods=['POST'])
 def read_excel_file():

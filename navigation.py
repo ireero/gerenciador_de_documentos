@@ -29,6 +29,14 @@ def read_excel_page():
 def index_zip():
     return render_template('zip/zip_page.html')
 
+@navigation.route('/zip_escolha/zipar')
+def zip_archive_page():
+    return render_template('zip/zip_ziping_file_page.html')
+
+@navigation.route('/zip_escolha/extrair')
+def extract_zip_file():
+    return render_template('zip/zip_extract_page.html')
+
 # Image
 @navigation.route('/imagem_escolha')
 def index_image():
