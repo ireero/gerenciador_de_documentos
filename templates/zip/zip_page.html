@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block head %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block styles %}
+        {{ bootstrap.load_css() }}
+    {% endblock %}
     <title>Gerenciador de documentos</title>
+    {% endblock %}
 </head>
 <body>
+    {% block content %}
     <h1>Tratativas para arquivos zipados</h1>
     <ul>
         <li><a href="zip_escolha/zipar">Zipar arquivo</a></li>
         <li><a href="zip_escolha/extrair">Extrair arquivo zipado</a></li>
     </ul>
+    {% endblock %}
+    {% block scripts %}
+        {{ bootstrap.load_js() }}
+    {% endblock %}
 </body>
 </html>

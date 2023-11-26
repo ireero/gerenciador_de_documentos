@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block head %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block styles %}
+        {{ bootstrap.load_css() }}
+    {% endblock %}
     <title>Gerenciador de documentos</title>
+    {% endblock %}
 </head>
 <body>
+    {% block content %}
     <h1>Leitura de Imagem</h1>
     <form action="{{ url_for('calls.image_read_text') }}" id="arquivo" method="POST" enctype="multipart/form-data">
         <input type="file" id="leitura_image" name="leitura_image" required> 
@@ -14,5 +20,9 @@
     {% if text_image != None %}
     <pre>{{text_image}}</pre>
     {% endif %}
+    {% endblock %}
+    {% block scripts %}
+        {{ bootstrap.load_js() }}
+    {% endblock %}
 </body>
 </html>

@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block head %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block styles %}
+        {{ bootstrap.load_css() }}
+    {% endblock %}
     <title>Gerenciador de documentos</title>
+    {% endblock %}
 </head>Extrair arquivos zipados</h1>
+<body>
+    {% block content %}
     <form action="{{ url_for('calls.extracting_ziped_files') }}" id="arquivo" method="POST" enctype="multipart/form-data">
         <input type="file" accept=".zip" id="extraindo_arquivo_zipado" name="extraindo_arquivo_zipado" required> 
         <button type="submit" style="background-color: red; color: white;" class="btn">Extrair arquivo zipado</button>
@@ -15,5 +22,9 @@
             <p>{{ file_folder }}</p>
         {% endfor %}
     {% endif %}
+    {% endblock %}
+    {% block scripts %}
+        {{ bootstrap.load_js() }}
+    {% endblock %}
 </body>
 </html>

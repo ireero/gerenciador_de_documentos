@@ -1,8 +1,24 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
- 
-db = SQLAlchemy()
+from pymongo import MongoClient
+from pymongo.server_api import ServerApi
+from flask_bootstrap import Bootstrap5
+import os
+
+MONGO_PWD = os.getenv('MONGO_PWD')
+
+uri = f'mongodb+srv://ireerovsky:{MONGO_PWD}@cluster0.bezpqbb.mongodb.net/?retryWrites=true&w=majority'
+
+client = MongoClient(uri, server_api=ServerApi('1'))
+
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
+
 app = Flask(__name__)
+bootstrap = Bootstrap5(app)
 
 from calls import calls as calls_blueprint
 
@@ -12,12 +28,6 @@ from navigation import navigation as navigation_blueprint
 
 app.register_blueprint(navigation_blueprint)
 
-app.config['SECRET-KEY'] = 'secret-key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///searchs.sqlite'
-
-db.init_app(app)
-
 with app.app_context():
-    db.create_all()
     if __name__ == '__main__':
         app.run(debug=False)

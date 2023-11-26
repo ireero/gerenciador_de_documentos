@@ -4,22 +4,33 @@ from models_documents_analytics.pdf_controller import PDFController
 from models_documents_analytics.image_controller import ImageController
 from models_documents_analytics.zip_controller import ZipController
 from models_documents_analytics.excel_controller import ExcelController
+from database import BaseDeDados
 import os
+from datetime import datetime
+import time
+
 
 calls = Blueprint('calls',__name__)
 
 @calls.route('/pdf/leitura', methods=['POST'])
 def pdf_reader():
+    time_init = time.time()
+    date_hour_init = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     file = request.files['leitura_pdf']
     process_code = str(uuid.uuid4())
     file.save(f'./data_temp/{process_code}.pdf')
     reader = PDFController(nome_pdf=process_code)
     content = reader.read_pdf()
     os.remove(f'./data_temp/{process_code}.pdf')
+    requisition = {"tipo": "pdf", "acao": "leitura",'conteudo': content['content_pages'], 'data_hr_adicao': date_hour_init, 'data_hr_adicao': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'tempo_de_processamento': time_process_manipulation(time_init=time_init, time_end=time.time())}
+    post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
+    print(f'Nova requisição inserida com sucesso! id: {post_id}')
     return render_template('pdf/pdf_read_page.html', text_pdf=content['content_pages'])
 
 @calls.route('/imagens/ler_arquivo', methods=['POST'])
 def image_read_text():
+    time_init = time.time()
+    date_hour_init = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     file = request.files['leitura_image']
     process_code = str(uuid.uuid4())
     type = ''
@@ -34,11 +45,16 @@ def image_read_text():
     
     image = ImageController(image_name=process_code, type=type)
     text = image.read_text()
+    requisition = {"tipo": "imagem", "acao": "leitura",'conteudo': text, 'data_hr_adicao': date_hour_init, 'data_hr_finalizao': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'tempo_de_processamento': time_process_manipulation(time_init=time_init, time_end=time.time())}
+    post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
+    print(f'Nova requisição inserida com sucesso! id: {post_id}')
     os.remove(f'./data_temp/{process_code}.{type}')
     return render_template('image/image_read_page.html', text_image=text)
 
 @calls.route('/zip/zipar_arquivo')
 def zip_file():
+    time_init = time.time()
+    date_hour_init = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     file = request.files['file']
     process_code = str(uuid.uuid4())
     archive_type = file.content_type.replace('application/', '').replace('image/', '')
@@ -46,10 +62,15 @@ def zip_file():
     zip = ZipController(file_name=process_code, file_type=archive_type)
     zip.zipando_arquivo()
     # os.remove(f'./data_temp/{process_code}.{archive_type}')
+    requisition = {"tipo": "zip", "acao": "zipando", 'data_hr_adicao': date_hour_init, 'data_hr_finalizao': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'tempo_de_processamento': time_process_manipulation(time_init=time_init, time_end=time.time())}
+    post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
+    print(f'Nova requisição inserida com sucesso! id: {post_id}')
     return send_file(f'./data_temp/ziped_archive.zip', mimetype='application/zip', as_attachment=True)
 
 @calls.route('/zip/extranindo_arquivos_zipados', methods=['POST'])
 def extracting_ziped_files():
+    time_init = time.time()
+    date_hour_init = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     file = request.files['extraindo_arquivo_zipado']
     process_code = str(uuid.uuid4())
     file.save(f'./data_temp/{process_code}.zip')
@@ -57,6 +78,9 @@ def extracting_ziped_files():
     data = []
     data = zip.extraindo_arquivo_zipado()
     os.remove(f'./data_temp/{process_code}.zip')
+    requisition = {"tipo": "zip", "acao": "extraindo", 'data_hr_adicao': date_hour_init, 'data_hr_finalizao': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'tempo_de_processamento': time_process_manipulation(time_init=time_init, time_end=time.time())}
+    post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
+    print(f'Nova requisição inserida com sucesso! id: {post_id}')
     return render_template('zip/zip_extract_page.html', files_folders=data)
 
 @calls.route('/zip/extraindo_arquivos_zipados')
@@ -65,10 +89,27 @@ def donwload_extracted_zip():
 
 @calls.route('/excel/ler_arquivo', methods=['POST'])
 def read_excel_file():
+    time_init = time.time()
+    date_hour_init = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     file = request.files['leitura_excel']
     process_code = str(uuid.uuid4())
     file.save(f'./data_temp/{process_code}.xlsx')
     excel = ExcelController(archive_name=process_code)
     text_data = excel.returning_data_xlsx()
     os.remove(f'./data_temp/{process_code}.xlsx')
+    requisition = {"tipo": "excel", "acao": "leitura",'conteudo': text_data, 'data_hr_adicao': date_hour_init, 'data_hr_finalizacao': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'tempo_de_processamento': time_process_manipulation(time_init=time_init, time_end=time.time())}
+    post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
+    print(f'Nova requisição inserida com sucesso! id: {post_id}')
     return render_template('excel/excel_read_page.html', text_excel=text_data)
+
+
+def time_process_manipulation(time_init, time_end):
+    seconds = int(time_end - time_init)
+
+    seconds = seconds % (24 * 3600)
+    hour = seconds // 3600
+    seconds %= 3600
+    minutes = seconds // 60
+    seconds %= 60   
+    
+    return "%d:%02d:%02d" % (hour, minutes, seconds)
