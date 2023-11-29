@@ -6,10 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block styles %}
         {{ bootstrap.load_css() }}
+        <style>
+            body {
+                padding: 10px;
+            }
+            nav {
+                margin-bottom: 10px;
+            }
+        </style>
     {% endblock %}
     <title>Gerenciador de documentos</title>
     {% endblock %}
-</head>Extrair arquivos zipados</h1>
+</head>
 <body>
 
     {% block navbar %}
@@ -44,8 +52,8 @@
     {% block content %}
 
     <form action="{{ url_for('calls.extracting_ziped_files') }}" id="arquivo" method="POST" enctype="multipart/form-data">
-        <input type="file" accept=".zip" id="extraindo_arquivo_zipado" name="extraindo_arquivo_zipado" required> 
-        <button type="submit" style="background-color: red; color: white;" class="btn">Extrair arquivo zipado</button>
+        <input type="file" id="zipando_arquivos" name="zipando_arquivos" required> 
+        <button type="submit" style="background-color: red; color: white;" class="btn">Zipar arquivos</button>
     </form>
     {% if files_folders != [] %}
         <h4>Arquivos dentro do arquivo zipado</h4>

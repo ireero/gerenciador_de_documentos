@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block styles %}
         {{ bootstrap.load_css() }}
+        <style>
+            body {
+                padding: 10px;
+            }
+            nav {
+                margin-bottom: 10px;
+            }
+        </style>
     {% endblock %}
     <title>Gerenciador de documentos</title>
     {% endblock %}
