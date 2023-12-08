@@ -3,8 +3,11 @@
 Zipar
 {% endblock %}
 {% block content %}
-<form action="{{ url_for('calls.extracting_ziped_files') }}" id="arquivo" method="POST" enctype="multipart/form-data">
-  <input type="file" accept=".zip" id="extraindo_arquivo_zipado" name="extraindo_arquivo_zipado" required multiple>
+<form action="{{ url_for('calls.zip_file') }}" id="arquivo" method="POST" enctype="multipart/form-data">
+  <input type="file" id="zipando_arquivo" name="zipando_arquivo" required multiple>
   <button type="submit" style="background-color: red; color: white;" class="btn">Zipar arquivo</button>
 </form>
+{% if download == True %}
+<a href="{{ url_for('calls.donwload_ziped_file') }}">Download</a>
+{% endif %}
 {% endblock %}

@@ -4,7 +4,7 @@ Extrair Zip
 {% endblock %}
 {% block content %}
 <form action="{{ url_for('calls.extracting_ziped_files') }}" id="arquivo" method="POST" enctype="multipart/form-data">
-  <input type="file" id="zipando_arquivos" name="zipando_arquivos" required> 
+  <input type="file" accept=".zip" id="extraindo_arquivo_zipado" name="extraindo_arquivo_zipado" required> 
   <button type="submit" style="background-color: red; color: white;" class="btn">Extrair arquivos</button>
 </form>
 {% if files_folders != [] %}

@@ -51,13 +51,16 @@ def image_read_text():
     os.remove(f'./data_temp/{process_code}.{type}')
     return render_template('image/image_read_page.html', text_image=text)
 
-@calls.route('/zip/zipar_arquivo')
+@calls.route('/zip/zipar_arquivo', methods=['POST'])
 def zip_file():
     time_init = time.time()
     date_hour_init = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    file = request.files['file']
+    file = request.files['zipando_arquivo']
     process_code = str(uuid.uuid4())
     archive_type = file.content_type.replace('application/', '').replace('image/', '')
+    if archive_type == 'text/plain':
+        archive_type = 'txt'
+    print(f'Tipo do arquivo -> {archive_type}')
     file.save(f'./data_temp/{process_code}.{archive_type}')
     zip = ZipController(file_name=process_code, file_type=archive_type)
     zip.zipando_arquivo()
@@ -65,9 +68,13 @@ def zip_file():
     requisition = {"type": "zip", "action": "ziping", 'date_and_hour_init': date_hour_init, 'date_and_hour_created': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'time_process': time_process_manipulation(time_init=time_init, time_end=time.time())}
     post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
     print(f'Nova requisição inserida com sucesso! id: {post_id}')
+    return render_template('zip/zip_ziping_file_page.html', download=True)
+
+@calls.route('/zip/baixar_arquivo_zipado')
+def donwload_ziped_file():
     return send_file(f'./data_temp/ziped_archive.zip', mimetype='application/zip', as_attachment=True)
 
-@calls.route('/zip/extranindo_arquivos_zipados', methods=['POST'])
+@calls.route('/zip/extraindo_arquivos_zipados', methods=['POST'])
 def extracting_ziped_files():
     time_init = time.time()
     date_hour_init = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -83,9 +90,6 @@ def extracting_ziped_files():
     print(f'Nova requisição inserida com sucesso! id: {post_id}')
     return render_template('zip/zip_extract_page.html', files_folders=data)
 
-@calls.route('/zip/extraindo_arquivos_zipados')
-def donwload_extracted_zip():
-    return send_file()
 
 @calls.route('/excel/ler_arquivo', methods=['POST'])
 def read_excel_file():
