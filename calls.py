@@ -22,7 +22,7 @@ def pdf_reader():
     reader = PDFController(nome_pdf=process_code)
     content = reader.read_pdf()
     os.remove(f'./data_temp/{process_code}.pdf')
-    requisition = {"tipo": "pdf", "acao": "leitura",'conteudo': content['content_pages'], 'data_hr_adicao': date_hour_init, 'data_hr_adicao': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'tempo_de_processamento': time_process_manipulation(time_init=time_init, time_end=time.time())}
+    requisition = {"type": "pdf", "action": "read", "date_and_hour_init": date_hour_init, 'date_and_hour_created': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'time_process': time_process_manipulation(time_init=time_init, time_end=time.time())}
     post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
     print(f'Nova requisição inserida com sucesso! id: {post_id}')
     return render_template('pdf/pdf_read_page.html', text_pdf=content['content_pages'])
@@ -45,7 +45,7 @@ def image_read_text():
     
     image = ImageController(image_name=process_code, type=type)
     text = image.read_text()
-    requisition = {"tipo": "imagem", "acao": "leitura",'conteudo': text, 'data_hr_adicao': date_hour_init, 'data_hr_finalizao': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'tempo_de_processamento': time_process_manipulation(time_init=time_init, time_end=time.time())}
+    requisition = {"type": "imagem", "action": "read",'date_and_hour_init': date_hour_init, 'date_and_hour_created': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'time_process': time_process_manipulation(time_init=time_init, time_end=time.time())}
     post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
     print(f'Nova requisição inserida com sucesso! id: {post_id}')
     os.remove(f'./data_temp/{process_code}.{type}')
@@ -62,7 +62,7 @@ def zip_file():
     zip = ZipController(file_name=process_code, file_type=archive_type)
     zip.zipando_arquivo()
     # os.remove(f'./data_temp/{process_code}.{archive_type}')
-    requisition = {"tipo": "zip", "acao": "zipando", 'data_hr_adicao': date_hour_init, 'data_hr_finalizao': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'tempo_de_processamento': time_process_manipulation(time_init=time_init, time_end=time.time())}
+    requisition = {"type": "zip", "action": "ziping", 'date_and_hour_init': date_hour_init, 'date_and_hour_created': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'time_process': time_process_manipulation(time_init=time_init, time_end=time.time())}
     post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
     print(f'Nova requisição inserida com sucesso! id: {post_id}')
     return send_file(f'./data_temp/ziped_archive.zip', mimetype='application/zip', as_attachment=True)
@@ -78,7 +78,7 @@ def extracting_ziped_files():
     data = []
     data = zip.extraindo_arquivo_zipado()
     os.remove(f'./data_temp/{process_code}.zip')
-    requisition = {"tipo": "zip", "acao": "extraindo", 'data_hr_adicao': date_hour_init, 'data_hr_finalizao': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'tempo_de_processamento': time_process_manipulation(time_init=time_init, time_end=time.time())}
+    requisition = {"type": "zip", "action": "extracting", 'date_and_hour_init': date_hour_init, 'date_and_hour_created': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'time_process': time_process_manipulation(time_init=time_init, time_end=time.time())}
     post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
     print(f'Nova requisição inserida com sucesso! id: {post_id}')
     return render_template('zip/zip_extract_page.html', files_folders=data)
@@ -97,7 +97,7 @@ def read_excel_file():
     excel = ExcelController(archive_name=process_code)
     text_data = excel.returning_data_xlsx()
     os.remove(f'./data_temp/{process_code}.xlsx')
-    requisition = {"tipo": "excel", "acao": "leitura",'conteudo': text_data, 'data_hr_adicao': date_hour_init, 'data_hr_finalizacao': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'tempo_de_processamento': time_process_manipulation(time_init=time_init, time_end=time.time())}
+    requisition = {"type": "excel", "action": "read", 'date_and_hour_init': date_hour_init, 'date_and_hour_created': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'time_process': time_process_manipulation(time_init=time_init, time_end=time.time())}
     post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
     print(f'Nova requisição inserida com sucesso! id: {post_id}')
     return render_template('excel/excel_read_page.html', text_excel=text_data)

@@ -45,3 +45,7 @@ def index_image():
 @navigation.route('/imagem_escolha/leitura')
 def read_image_page():
     return render_template('image/image_read_page.html')
+
+@navigation.route('/testing')
+def teste():
+    return render_template('base.html')
