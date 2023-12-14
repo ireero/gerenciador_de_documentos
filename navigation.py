@@ -48,4 +48,4 @@ def read_image_page():
 
 @navigation.route('/testing')
 def teste():
-    return render_template('base.html')
+    return render_template('auth/login.html')

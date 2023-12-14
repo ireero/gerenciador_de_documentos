@@ -7,9 +7,9 @@ import os
 
 MONGO_PWD = os.getenv('MONGO_PWD')
 
-uri = f'mongodb+srv://ireerovsky:{MONGO_PWD}@cluster0.bezpqbb.mongodb.net/?retryWrites=true&w=majority'
+connection_string = f'mongodb+srv://ireerovsky:{MONGO_PWD}@cluster0.bezpqbb.mongodb.net/?retryWrites=true&w=majority'
 
-client = MongoClient(uri, server_api=ServerApi('1'))
+client = MongoClient(connection_string, server_api=ServerApi('1'))
 
 try:
     client.admin.command('ping')

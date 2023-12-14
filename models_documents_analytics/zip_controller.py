@@ -24,7 +24,7 @@ class ZipController:
                 index = p.index('\\')
                 second_index = self.findnth(haystack=p, needle='\\', n=1)
                 second_folder = p[index+1:second_index]
-                print(second_folder)
+                print(f'second_folder -> {second_folder}')
                 break
         if second_folder != '':
             shutil.rmtree(f'./data_temp/{second_folder}')

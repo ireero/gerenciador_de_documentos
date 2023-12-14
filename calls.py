@@ -11,6 +11,7 @@ import time
 
 
 calls = Blueprint('calls',__name__)
+mongo_db = BaseDeDados()
 
 @calls.route('/pdf/leitura', methods=['POST'])
 def pdf_reader():
@@ -23,8 +24,7 @@ def pdf_reader():
     content = reader.read_pdf()
     os.remove(f'./data_temp/{process_code}.pdf')
     requisition = {"type": "pdf", "action": "read", "date_and_hour_init": date_hour_init, 'date_and_hour_created': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'time_process': time_process_manipulation(time_init=time_init, time_end=time.time())}
-    post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
-    print(f'Nova requisição inserida com sucesso! id: {post_id}')
+    mongo_db.insert_document(requisition)
     return render_template('pdf/pdf_read_page.html', text_pdf=content['content_pages'])
 
 @calls.route('/imagens/ler_arquivo', methods=['POST'])
@@ -46,8 +46,7 @@ def image_read_text():
     image = ImageController(image_name=process_code, type=type)
     text = image.read_text()
     requisition = {"type": "imagem", "action": "read",'date_and_hour_init': date_hour_init, 'date_and_hour_created': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'time_process': time_process_manipulation(time_init=time_init, time_end=time.time())}
-    post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
-    print(f'Nova requisição inserida com sucesso! id: {post_id}')
+    mongo_db.insert_document(requisition)
     os.remove(f'./data_temp/{process_code}.{type}')
     return render_template('image/image_read_page.html', text_image=text)
 
@@ -60,14 +59,12 @@ def zip_file():
     archive_type = file.content_type.replace('application/', '').replace('image/', '')
     if archive_type == 'text/plain':
         archive_type = 'txt'
-    print(f'Tipo do arquivo -> {archive_type}')
     file.save(f'./data_temp/{process_code}.{archive_type}')
     zip = ZipController(file_name=process_code, file_type=archive_type)
     zip.zipando_arquivo()
-    # os.remove(f'./data_temp/{process_code}.{archive_type}')
+    os.remove(f'./data_temp/{process_code}.{archive_type}')
     requisition = {"type": "zip", "action": "ziping", 'date_and_hour_init': date_hour_init, 'date_and_hour_created': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'time_process': time_process_manipulation(time_init=time_init, time_end=time.time())}
-    post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
-    print(f'Nova requisição inserida com sucesso! id: {post_id}')
+    mongo_db.insert_document(requisition)
     return render_template('zip/zip_ziping_file_page.html', download=True)
 
 @calls.route('/zip/baixar_arquivo_zipado')
@@ -86,8 +83,7 @@ def extracting_ziped_files():
     data = zip.extraindo_arquivo_zipado()
     os.remove(f'./data_temp/{process_code}.zip')
     requisition = {"type": "zip", "action": "extracting", 'date_and_hour_init': date_hour_init, 'date_and_hour_created': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'time_process': time_process_manipulation(time_init=time_init, time_end=time.time())}
-    post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
-    print(f'Nova requisição inserida com sucesso! id: {post_id}')
+    mongo_db.insert_document(requisition)
     return render_template('zip/zip_extract_page.html', files_folders=data)
 
 
@@ -102,8 +98,7 @@ def read_excel_file():
     text_data = excel.returning_data_xlsx()
     os.remove(f'./data_temp/{process_code}.xlsx')
     requisition = {"type": "excel", "action": "read", 'date_and_hour_init': date_hour_init, 'date_and_hour_created': datetime.now().strftime("%d/%m/%Y %H:%M:%S"), 'time_process': time_process_manipulation(time_init=time_init, time_end=time.time())}
-    post_id = BaseDeDados().requisitions.insert_one(requisition).inserted_id
-    print(f'Nova requisição inserida com sucesso! id: {post_id}')
+    mongo_db.insert_document(requisition)
     return render_template('excel/excel_read_page.html', text_excel=text_data)
 
 
